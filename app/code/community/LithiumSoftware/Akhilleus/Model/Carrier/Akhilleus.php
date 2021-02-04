@@ -43,8 +43,9 @@ class LithiumSoftware_Akhilleus_Model_Carrier_Akhilleus
      * @return Mage_Shipping_Model_Rate_Result
      */
     public function collectRates(Mage_Shipping_Model_Rate_Request $request){
-        $this->_init($request);
 
+        $this->_init($request);
+    
         $this->_getQuotes($request);
 
         return $this->_result;
@@ -606,8 +607,23 @@ class LithiumSoftware_Akhilleus_Model_Carrier_Akhilleus
         }
     }
 
+    /**
+     * Prior the products arrays to be used, clean them avoid duplicating problem
+     *
+     * @return void
+     */
+    private function _clearArray() {
+        unset($this->_productsQty);
+        $this->_productsQty = array();
+
+        unset($this->_simpleProducts);
+        $this->_simpleProducts = array();
+    }
+
     private function getSimpleProducts($items)
     {
+        $this->_clearArray();
+        
         $j = 0;
         foreach ($items as $child)
         {
